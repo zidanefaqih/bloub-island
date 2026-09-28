@@ -126,7 +126,40 @@ Open items for the adapter contract:
 3. Confirm SSE event names/types in `/api/events` and map them to protocol v1 phases.
 4. Decide auth handling for the packaged app (`/api/auth/session` cookie?) vs headless single-user.
 
-## 6. Logs and dirs
+## 6. pi as an engine — how OpenMausBot runs it
+
+OpenMausBot ships a native **`pi` driver** (`resources/server/server/drivers/pi.js`). Verified
+from the shipped bundle (v0.1.89):
+
+```js
+const PI_ARGS = ["--mode", "rpc", "--no-session"];
+const PI_MODEL_UPDATE_ARGS = ["update", "--models", "--no-approve"];
+```
+
+- pi is spawned in **RPC mode with `--no-session`** → turns are ephemeral and **never create
+  files under `~/.pi/agent/sessions/`**. Interactive pi history stays clean and separate.
+- Conversations live in OpenMausBot's own store: `~/.openmausbot/` (`bots.json`, `events/`,
+  `memory-journal/`, `attachments/`, per-bot dirs). pi holds no memory of a turn once the RPC
+  process/session ends; OpenMausBot replays context per bot/thread.
+- Model detection: reads `~/.pi/agent/settings.json` (pi's default model) and uses
+  `~/.pi/agent/auth.json` (BYOK credentials, no re-login), probes the catalog through RPC
+  `get_available_models`, and refreshes it with `pi update --models --no-approve`.
+- Local hosts (Ollama / LM Studio / oMLX / EXO / Unsloth) are **upserted into
+  `~/.pi/agent/models.json`** so pi can reach them. Plain cloud usage leaves that file alone.
+- Tools/approvals: OpenMausBot injects `pi-mcp-extension.ts` (a JSON-RPC 2.0 stdio MCP
+  server) as a configured MCP server; pi's `extension_ui_request` becomes a normal approval
+  card in OpenMausBot chat.
+- Nothing is written into `~/.pi/agent/extensions/`.
+
+Verified on the machine after a test turn: no new files in `~/.pi/agent/sessions/`, unchanged
+mtimes on `models.json` / `settings.json` / `auth.json`, extensions dir untouched (only
+`github-token.ts`).
+
+Design consequence for the island: the same RPC path is the lightweight alternative to a
+full app — and if we want island chats to be inspectable in pi later, spawn
+`pi --mode rpc --session-id <our-id>` instead of `--no-session`.
+
+## 7. Logs and dirs
 
 | Path | Contents |
 |---|---|
@@ -136,7 +169,7 @@ Open items for the adapter contract:
 | `~/Applications/OpenMausBot-0.1.89/` | extracted AppImage (can be deleted to uninstall) |
 | `~/.local/share/applications/openmausbot.desktop` | launcher (with `--ozone-platform=x11`) |
 
-## 7. Reproduce the checks
+## 8. Reproduce the checks
 
 ```bash
 # harness + SSE (app running)
