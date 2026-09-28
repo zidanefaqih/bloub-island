@@ -49,6 +49,7 @@ Full tables, specs and file-level instructions: [`docs/`](./docs).
 | [`docs/adapters.md`](./docs/adapters.md) | Multi-harness design: how to support other agents without building a native app |
 | [`docs/grok-bot-anatomy.md`](./docs/grok-bot-anatomy.md) | How Grok Bot is built, what's open source, how to get close |
 | [`docs/island-chat.md`](./docs/island-chat.md) | Goal: chat with the bot from the island; app in tray (OpenMausBot backend) |
+| [`docs/openmausbot-notes.md`](./docs/openmausbot-notes.md) | Installed on this machine: AppImage, Wayland quirk, tray, verified API |
 | [`docs/quickshell-integration.md`](./docs/quickshell-integration.md) | Exact end4-pC integration points |
 | [`docs/research-notes.md`](./docs/research-notes.md) | Raw findings, links, versions, file sizes |
 | [`protocol/v1.schema.json`](./protocol/v1.schema.json) | Machine-readable bridge protocol schema |
