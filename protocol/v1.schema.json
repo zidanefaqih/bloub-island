@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/zidanefaqih/bloub-island/protocol/v1.schema.json",
+  "title": "bloub-island bridge protocol v1",
+  "description": "One JSON object per line (NDJSON) over $XDG_RUNTIME_DIR/bloub-island.sock. Writer: pi extension. Reader: Quickshell services/Agents.qml.",
+  "type": "object",
+  "required": ["v", "event", "sessionId", "ts"],
+  "additionalProperties": true,
+  "properties": {
+    "v": {
+      "const": 1,
+      "description": "Protocol version. Bump on breaking change."
+    },
+    "event": {
+      "enum": [
+        "session_start",
+        "agent_start",
+        "turn_start",
+        "message_update",
+        "message_end",
+        "tool_start",
+        "tool_update",
+        "tool_end",
+        "prompt_start",
+        "prompt_end",
+        "agent_settled",
+        "compact_start",
+        "compact_end",
+        "session_shutdown"
+      ]
+    },
+    "sessionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ts": {
+      "type": "number",
+      "description": "Seconds since epoch (float). Monotonicity not required."
+    },
+    "pid": { "type": "integer" },
+    "tty": { "type": "string" },
+    "cwd": { "type": "string" },
+    "title": { "type": "string" },
+    "terminal": { "type": "string" },
+    "window": {
+      "type": "string",
+      "description": "Hyprland window address (0x...), resolved by walking /proc ancestry."
+    },
+    "phase": {
+      "enum": [
+        "idle",
+        "thinking",
+        "streaming",
+        "tool",
+        "waiting",
+        "compacting",
+        "error",
+        "done",
+        "sleep",
+        "offline"
+      ]
+    },
+    "tool": { "type": "string" },
+    "toolCallId": { "type": "string" },
+    "ok": { "type": "boolean" },
+    "turn": { "type": "integer" },
+    "role": { "enum": ["user", "assistant", "toolResult"] },
+    "kind": { "enum": ["select", "confirm", "input", "editor", "custom"] }
+  }
+}
