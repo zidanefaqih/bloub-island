@@ -20,7 +20,9 @@ Success looks like:
 
 - No control of pi from the island (no "approve" button in v1; clicking focuses the
   terminal instead). Approval UI stays in the TUI.
-- No support for other agent harnesses (Claude Code, Codex, …) — the bridge is pi-specific.
+- v1 ships the **pi adapter only**, but the island must stay harness-agnostic: protocol v1
+  carries an optional `agent` field and the adapter contract is documented in
+  [`adapters.md`](./adapters.md). Adding a harness must never require touching the island.
 - No bloub customization studio (shapes/colors/expressions editor). Only the measured
   default silhouette + a few states relevant to agent status.
 - No Windows/macOS. Linux/Quickshell only. No `Quickshell.Web` (not available).
@@ -29,8 +31,8 @@ Success looks like:
 
 ```
 ┌───────────────────────────┐
-│ pi TUI session            │
-│  extension: bloub-island  │  hooks: session_*/agent_*/turn_*/message_*/
+│ Harnesses (layer 1)       │  pi today; OpenMausBot/OpenBot/Claude Code/Codex later
+│  adapter: bloub-island.ts │  hooks: session_*/agent_*/turn_*/message_*/
 │  → NDJSON over unix sock  │         tool_execution_*/ui_prompt_*/compact_*
 └───────────┬───────────────┘
             │ $XDG_RUNTIME_DIR/bloub-island.sock
@@ -51,6 +53,10 @@ Success looks like:
 │ DynamicIsland.qml         │  expands pill, badges, always-win when waiting
 └───────────────────────────┘
 ```
+
+Any adapter can write the same protocol — an SSE client for OpenMausBot's harness server
+(`127.0.0.1:8799`), an AG-UI client for OpenBot, or a plain hook script. The island (layer 3)
+never learns about any harness; see [`adapters.md`](./adapters.md).
 
 ### Why a socket, not a file/poll
 

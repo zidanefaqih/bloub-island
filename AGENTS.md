@@ -18,6 +18,10 @@ Three moving parts:
 2. **`services/Agents.qml`** — Quickshell singleton, `SocketServer` + per-session registry.
 3. **Mascot** — bloub engine ported from TypeScript to framework-free JS, rendered in QML.
 
+The island is **harness-agnostic**: pi is only the first adapter. Any harness (OpenMausBot
+SSE, OpenBot AG-UI, Claude Code hooks, …) can write the same protocol; never put
+harness-specific logic in QML. See `docs/adapters.md`.
+
 ## Environment (this dev machine)
 
 - Arch Linux + Hyprland/uwsm, bash (fish too), Quickshell **0.2.1** (`quickshell-git`, AUR).
@@ -58,7 +62,8 @@ Transport: NDJSON (one JSON object per line) over `$XDG_RUNTIME_DIR/bloub-island
  "tty":"/dev/pts/3","cwd":"/home/user/proj","title":"proj","phase":"thinking"}
 ```
 
-- `v`, `event`, `sessionId`, `ts` are always present. Optional fields per event.
+- `v`, `event`, `sessionId`, `ts` are always present. Optional fields per event, including
+  `agent` (harness id; defaults to `"pi"`) and `source`.
 - Full schema: `protocol/v1.schema.json`. Full event→phase mapping: `docs/agent-bridge.md`.
 - The QML side must tolerate: unknown fields, unknown `event` values, reconnects, multiple
   concurrent sessions, and a stale socket file.

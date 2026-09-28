@@ -11,6 +11,15 @@
       "const": 1,
       "description": "Protocol version. Bump on breaking change."
     },
+    "agent": {
+      "type": "string",
+      "default": "pi",
+      "description": "Harness id: pi | openmausbot | openbot | claude-code | codex | opencode | … Defaults to 'pi' when absent."
+    },
+    "source": {
+      "enum": ["extension", "sse", "log", "hook", "script"],
+      "description": "How the event reached the socket."
+    },
     "event": {
       "enum": [
         "session_start",

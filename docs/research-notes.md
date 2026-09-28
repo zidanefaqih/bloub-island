@@ -87,6 +87,29 @@ Raw findings collected while writing the spec. Versions and facts, not decisions
 - Services are singletons in `services/` (`pragma Singleton`, e.g. `TimerService.qml`);
   `import qs.services`.
 
+## Adjacent multi-agent projects (evaluated 2026-09-28)
+
+Considered as "do we need a native app first?" — answer: no, but their event streams are
+adapter targets.
+
+- **OpenMausBot** — <https://github.com/milind-soni/OpenMausBot>: 3.6 k★, Apache-2.0,
+  Electron chat app (macOS/Windows/Ubuntu) driving Claude/Codex/Grok CLIs locally. Its README
+  describes a **harness server on 127.0.0.1:8799** exposing HTTP commands + **one SSE event
+  stream**; drivers per provider (Claude, Codex, Grok Build via stream-JSON / JSON-RPC / ACP);
+  evently logs as per-thread **NDJSON** under `~/.openmausbot`; stdio MCP server for external
+  clients. Its README's architecture table (`server/drivers/`, `server/harness/`,
+  `server/index.ts`, `server/tts/`) is the canonical-event-stream pattern our adapter layer
+  converges on. Ubuntu **Wayland host control disabled** (their issue #345) — irrelevant for
+  status consumption.
+- **OpenBot (CopilotKit)** — <https://github.com/CopilotKit/openbot>: 5.6 k★, MIT,
+  TypeScript, alpha. Self-hosted agent platform (Docker Compose + PostgreSQL + Bun +
+  CopilotKit Intelligence); every Bot is any endpoint speaking **AG-UI**
+  (<https://github.com/ag-ui-protocol/ag-ui>), ~16 standard event types (run/step/text/tool
+  lifecycle, state snapshots/deltas), transport-agnostic (SSE/WebSocket/webhooks); tool calls
+  go through a governance gateway. Heavy to run; good adapter target, not a dependency.
+- Consequence recorded in [`adapters.md`](./adapters.md): the island is layer 3 and stays
+  harness-agnostic; protocol v1 gained optional `agent` + `source` fields.
+
 ## Reproduce the verification
 
 ```bash

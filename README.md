@@ -46,6 +46,7 @@ Full tables, specs and file-level instructions: [`docs/`](./docs).
 | [`docs/plan.md`](./docs/plan.md) | Goals, architecture, phases, acceptance criteria, risks |
 | [`docs/bloub-port.md`](./docs/bloub-port.md) | bloub research + how to port its engine to QML |
 | [`docs/agent-bridge.md`](./docs/agent-bridge.md) | pi extension + unix-socket protocol spec |
+| [`docs/adapters.md`](./docs/adapters.md) | Multi-harness design: how to support other agents without building a native app |
 | [`docs/quickshell-integration.md`](./docs/quickshell-integration.md) | Exact end4-pC integration points |
 | [`docs/research-notes.md`](./docs/research-notes.md) | Raw findings, links, versions, file sizes |
 | [`protocol/v1.schema.json`](./protocol/v1.schema.json) | Machine-readable bridge protocol schema |
