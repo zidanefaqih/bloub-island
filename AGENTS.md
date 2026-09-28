@@ -78,7 +78,10 @@ Transport: NDJSON (one JSON object per line) over `$XDG_RUNTIME_DIR/bloub-island
    `alert`, `burst`. Verify frozen frames against upstream `#planche`.
 3. **Phase 3 — polish.** Remaining states, expanded hover view, click-to-focus terminal,
    multi-session badge, theme integration, config toggle.
-4. **Phase 4 — ship.** Sync to live config, README update, optional upstream PR to end4-pC.
+4. **Phase 3b — chat from the island.** Backend in tray, island as the only UI. Decision and
+   design in [`docs/island-chat.md`](./docs/island-chat.md) (OpenMausBot harness +
+   bidirectional commands).
+5. **Phase 4 — ship.** Sync to live config, README update, optional upstream PR to end4-pC.
 
 ## Quality gates
 

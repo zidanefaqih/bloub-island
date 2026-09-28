@@ -15,11 +15,16 @@ Success looks like:
 - When the turn settles, a `burst` plays, then everything collapses back to normal.
 - With no pi running, the bar is byte-for-byte as before.
 - The mascot follows the theme (light/dark) with no hardcoded colors.
+- With a backend running in the tray (OpenMausBot), the expanded island is a working chat
+  surface: read the stream, send a turn, answer approvals — without opening the app window.
+  Design: [`island-chat.md`](./island-chat.md).
 
 ## 2. Non-goals (v1)
 
-- No control of pi from the island (no "approve" button in v1; clicking focuses the
-  terminal instead). Approval UI stays in the TUI.
+- v1's pi adapter is status-only (no approving/sending from the island; clicking focuses the
+  terminal). Sending and approvals arrive in Phase 3b through the bidirectional command
+  protocol with a chat-capable backend (OpenMausBot harness or pi RPC). Approval UI remains
+  available in the backend's own window as a fallback.
 - v1 ships the **pi adapter only**, but the island must stay harness-agnostic: protocol v1
   carries an optional `agent` field and the adapter contract is documented in
   [`adapters.md`](./adapters.md). Adding a harness must never require touching the island.
